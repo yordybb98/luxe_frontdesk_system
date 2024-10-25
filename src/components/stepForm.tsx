@@ -19,7 +19,12 @@ export default function StepForm({ step, formData, updateForm }: { step: number;
                         </div>
 
                         <div className="flex items-center space-x-2">
-                            <Switch id="isCompany" checked={formData.isCompany} onCheckedChange={(checked) => updateForm("isCompany", checked)} className="bg-red-700" />
+                            <Switch
+                                id="isCompany"
+                                checked={formData.isCompany}
+                                onCheckedChange={(checked) => updateForm("isCompany", checked)}
+                                className={cn(formData.isCompany && "data-[state=checked]:bg-green-500", "transition duration-200 ease-in-out")}
+                            />
                             <Label htmlFor="isCompany">Is this for a company?</Label>
                         </div>
                         {formData.isCompany && (
