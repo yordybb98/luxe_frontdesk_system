@@ -5,6 +5,7 @@ import { Input } from "./ui/input";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Switch } from "./ui/switch";
 import { Client } from "@/types/types";
+import { cn } from "@/lib/utils";
 
 export default function StepForm({ step, formData, updateForm }: { step: number; formData: Client; updateForm: (key: string, value: string | boolean) => void }) {
     const renderStep = () => {
@@ -80,11 +81,11 @@ export default function StepForm({ step, formData, updateForm }: { step: number;
                                 <Label>Preferred Contact Method</Label>
                                 <RadioGroup value={formData.preferredContact} onValueChange={(value) => updateForm("preferredContact", value)}>
                                     <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="email" id="email" />
+                                        <RadioGroupItem value="email" id="email" className={cn(formData.preferredContact === "email" && "bg-green-500 text-white border-green-500")} />
                                         <Label htmlFor="email">Email</Label>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="phone" id="phone" />
+                                        <RadioGroupItem value="phone" id="phone" className={cn(formData.preferredContact === "phone" && "bg-green-500 text-white border-green-500")} />
                                         <Label htmlFor="phone">Phone</Label>
                                     </div>
                                 </RadioGroup>
@@ -93,11 +94,11 @@ export default function StepForm({ step, formData, updateForm }: { step: number;
                                 <Label>Preferred Contact Language</Label>
                                 <RadioGroup value={formData.preferredLanguage} onValueChange={(value) => updateForm("preferredLanguage", value)}>
                                     <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="es" id="spanish" />
+                                        <RadioGroupItem value="es" id="spanish" className={cn(formData.preferredLanguage === "es" && "bg-green-500 text-white border-green-500")} />
                                         <Label htmlFor="spanish">Spanish</Label>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="en" id="english" />
+                                        <RadioGroupItem value="en" id="english" className={cn(formData.preferredLanguage === "en" && "bg-green-500 text-white border-green-500")} />
                                         <Label htmlFor="english">English</Label>
                                     </div>
                                 </RadioGroup>
