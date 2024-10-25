@@ -18,7 +18,7 @@ export default function StepForm({ step, formData, updateForm }: { step: number;
                         </div>
 
                         <div className="flex items-center space-x-2">
-                            <Switch id="isCompany" checked={formData.isCompany} onCheckedChange={(checked) => updateForm("isCompany", checked)} />
+                            <Switch id="isCompany" checked={formData.isCompany} onCheckedChange={(checked) => updateForm("isCompany", checked)} className="bg-red-700" />
                             <Label htmlFor="isCompany">Is this for a company?</Label>
                         </div>
                         {formData.isCompany && (
@@ -91,7 +91,7 @@ export default function StepForm({ step, formData, updateForm }: { step: number;
                             </div>
                             <div className="space-y-2">
                                 <Label>Preferred Contact Language</Label>
-                                <RadioGroup value={formData.preferredLanguage} onValueChange={(value) => updateForm("preferredContact", value)}>
+                                <RadioGroup value={formData.preferredLanguage} onValueChange={(value) => updateForm("preferredLanguage", value)}>
                                     <div className="flex items-center space-x-2">
                                         <RadioGroupItem value="es" id="spanish" />
                                         <Label htmlFor="spanish">Spanish</Label>
