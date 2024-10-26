@@ -105,7 +105,7 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                                 className={cn(errors.street && errorStyles)}
                             />
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="city">City</Label>
                                 <Input id="city" placeholder="Cape Coral" value={formData.city} onChange={(e) => updateForm("city", e.target.value)} className={cn(errors.city && errorStyles)} />
@@ -113,7 +113,7 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                             <div className="space-y-2">
                                 <Label htmlFor="state">State</Label>
                                 <Select onValueChange={(e) => updateForm("state_id", e)} defaultValue={formData.state_id} disabled={loadingAllStates}>
-                                    <SelectTrigger className="w-[280px]">
+                                    <SelectTrigger>
                                         {loadingAllStates ? (
                                             <div className="flex items-center space-x-3">
                                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -133,7 +133,7 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                                 </Select>
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="zip">ZIP Code</Label>
                                 <Input id="zip" type="number" placeholder="33909" value={formData.zip} onChange={(e) => updateForm("zip", e.target.value)} className={cn(errors.zip && errorStyles)} />
@@ -142,7 +142,7 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                                 <Label htmlFor="country">Country</Label>
 
                                 <Select onValueChange={(e) => updateForm("country_id", e)} defaultValue={formData.country_id} disabled>
-                                    <SelectTrigger className="w-[280px]">
+                                    <SelectTrigger>
                                         {loadingAllCountries ? (
                                             <div className="flex items-center space-x-3">
                                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -178,7 +178,7 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                                 className={cn(errors.email && errorStyles)}
                             />
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1  md:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="phone">Phone Number</Label>
                                 <Input
@@ -202,7 +202,7 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                                 />
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label>Preferred Contact Method</Label>
                                 <RadioGroup value={formData.preferredContactMethod} onValueChange={(value) => updateForm("preferredContactMethod", value)}>

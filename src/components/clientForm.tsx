@@ -182,7 +182,7 @@ export default function ClientForm() {
                 </div>
 
                 {/* Form */}
-                <form onSubmit={(e) => e.preventDefault()} className="flex flex-col justify-between space-y-6 h-[320px]">
+                <form onSubmit={(e) => e.preventDefault()} className="flex flex-col justify-between space-y-6 md:h-[320px] transition-all ease-in-out">
                     <div>
                         <AnimatePresence mode="wait">
                             <StepForm step={step} formData={formData} updateForm={updateForm} errors={errors} />
