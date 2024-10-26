@@ -3,13 +3,12 @@
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, ChevronLeft, Check } from "lucide-react";
+import { ChevronRight, ChevronLeft, Check, Loader2 } from "lucide-react";
 import StepForm from "./stepform/stepForm";
 import { Client, FormErrors } from "@/types/types";
 import { CLIENT_FORM_STEPS } from "@/constants/constants";
 import SuccessModal from "./successModal";
 import { toast } from "react-toastify";
-import { stat } from "fs";
 
 export default function ClientForm() {
     const [step, setStep] = useState(1);
@@ -30,6 +29,7 @@ export default function ClientForm() {
         lang: "es_ES",
     });
     const [errors, setErrors] = useState<FormErrors>({});
+    const [isLoading, setIsLoading] = useState(false);
 
     const updateForm = (key: keyof Client, value: Client[keyof Client]) => {
         if (errors[key]) {
@@ -92,6 +92,7 @@ export default function ClientForm() {
 
     const handleSubmit = async () => {
         try {
+            setIsLoading(true);
             const { isCompany, companyName, preferredContactMethod, ...restOfFormData } = formData;
             const normalizedData = {
                 ...restOfFormData,
@@ -125,6 +126,8 @@ export default function ClientForm() {
         } catch (error: any) {
             console.error({ error });
             toast.error(error.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -190,9 +193,18 @@ export default function ClientForm() {
                             <ChevronLeft className="w-4 h-4 mr-2" />
                             Previous
                         </Button>
-                        <Button type="button" onClick={nextStep} className="bg-green-500 hover:bg-green-600">
-                            {step === CLIENT_FORM_STEPS ? "Submit" : "Next"}
-                            {step !== CLIENT_FORM_STEPS && <ChevronRight className="w-4 h-4 ml-2" />}
+                        <Button type="button" onClick={nextStep} className="bg-green-500 hover:bg-green-600" disabled={isLoading}>
+                            {isLoading ? (
+                                <div className="flex items-center space-x-3">
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                    <span>Loading</span>
+                                </div>
+                            ) : (
+                                <>
+                                    {step === CLIENT_FORM_STEPS ? "Submit" : "Next"}
+                                    {step !== CLIENT_FORM_STEPS && <ChevronRight className="w-4 h-4 ml-2" />}
+                                </>
+                            )}
                         </Button>
                     </div>
                 </form>

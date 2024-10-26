@@ -20,7 +20,7 @@ export async function POST(request: Request) {
         createContactSchema.parse(body);
 
         const UID = await authenticateFromOdoo();
-        const newPartnerID = await createPartnerOdoo(UID, body);
+        await createPartnerOdoo(UID, body);
 
         return NextResponse.json({});
     } catch (error: any) {

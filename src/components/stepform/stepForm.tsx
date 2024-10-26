@@ -6,25 +6,43 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Switch } from "../ui/switch";
 import { Client, FormErrors } from "@/types/types";
 import { cn } from "@/lib/utils";
-import { baseColor, checkedStyles, errorStyles } from "./styles";
-import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
+import { checkedStyles, errorStyles } from "./styles";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { getAllStates } from "@/actions/states";
 import { State } from "@/types/state";
 import { Country } from "@/types/country";
 import { getAllCountries } from "@/actions/countries";
+import { toast } from "react-toastify";
+import { Loader2 } from "lucide-react";
 
 export default function StepForm({ step, formData, updateForm, errors }: { step: number; formData: Client; updateForm: (key: keyof Client, value: Client[keyof Client]) => void; errors: FormErrors }) {
     const [allStates, setAllStates] = useState<State[]>([]);
+    const [loadingAllStates, setLoadingAllStates] = useState<boolean>(false);
     const [allCountries, setAllCountries] = useState<Country[]>([]);
+    const [loadingAllCountries, setLoadingAllCountries] = useState<boolean>(false);
 
     const loadAllStates = async () => {
-        const fetchedStates = await getAllStates();
-        setAllStates(fetchedStates);
+        try {
+            setLoadingAllStates(true);
+            const fetchedStates = await getAllStates();
+            setAllStates(fetchedStates);
+        } catch (error: any) {
+            toast.error(error.message);
+        } finally {
+            setLoadingAllStates(false);
+        }
     };
 
     const loadAllCountries = async () => {
-        const fetchedCountries = await getAllCountries();
-        setAllCountries(fetchedCountries);
+        try {
+            setLoadingAllCountries(true);
+            const fetchedCountries = await getAllCountries();
+            setAllCountries(fetchedCountries);
+        } catch (error: any) {
+            toast.error(error.message);
+        } finally {
+            setLoadingAllCountries(false);
+        }
     };
 
     useEffect(() => {
@@ -94,9 +112,16 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="state">State</Label>
-                                <Select onValueChange={(e) => updateForm("state_id", e)} defaultValue={formData.state_id}>
+                                <Select onValueChange={(e) => updateForm("state_id", e)} defaultValue={formData.state_id} disabled={loadingAllStates}>
                                     <SelectTrigger className="w-[280px]">
-                                        <SelectValue placeholder="Select a timezone" className={cn(errors.state_id && errorStyles)} />
+                                        {loadingAllStates ? (
+                                            <div className="flex items-center space-x-3">
+                                                <Loader2 className="h-4 w-4 animate-spin" />
+                                                <span>Loading</span>
+                                            </div>
+                                        ) : (
+                                            <SelectValue placeholder="Select an state" className={cn(errors.state_id && errorStyles)} />
+                                        )}
                                     </SelectTrigger>
                                     <SelectContent className="h-[250px]">
                                         {allStates.map((state) => (
@@ -118,7 +143,14 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
 
                                 <Select onValueChange={(e) => updateForm("country_id", e)} defaultValue={formData.country_id} disabled>
                                     <SelectTrigger className="w-[280px]">
-                                        <SelectValue placeholder="Select a timezone" className={cn(errors.country_id && errorStyles)} />
+                                        {loadingAllCountries ? (
+                                            <div className="flex items-center space-x-3">
+                                                <Loader2 className="h-4 w-4 animate-spin" />
+                                                <span>Loading</span>
+                                            </div>
+                                        ) : (
+                                            <SelectValue placeholder="Select a country" className={cn(errors.country_id && errorStyles)} />
+                                        )}
                                     </SelectTrigger>
                                     <SelectContent className="h-[250px]">
                                         {allCountries.map((country) => (
@@ -159,7 +191,7 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="phone">Office Number</Label>
+                                <Label htmlFor="phone">Office Number (Optional)</Label>
                                 <Input
                                     id="phone"
                                     type="tel"

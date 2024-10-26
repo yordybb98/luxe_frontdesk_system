@@ -1,4 +1,4 @@
-const xmlrpc = require("xmlrpc");
+import xmlrpc from "xmlrpc";
 
 // Setting up Odoo credentials
 const url = "https://luxe-graphics.odoo.com";
