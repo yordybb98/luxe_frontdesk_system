@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import { authenticateFromOdoo, getPartnerByIdOdoo } from "../../odoo";
+import { authenticateFromOdoo, getAllCountriesOdoo } from "../odoo";
 
-export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
+export async function GET() {
     try {
         const UID = await authenticateFromOdoo();
-        const res = await getPartnerByIdOdoo(UID, +id);
+        const res = await getAllCountriesOdoo(UID);
 
         return NextResponse.json(res);
     } catch (error: any) {

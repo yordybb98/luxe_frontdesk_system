@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
-import { authenticateFromOdoo, getAllPartners, getOdooVersion } from "../odoo";
+import { createContactSchema } from "@/schemas/zodSchemas/contact";
+import { z } from "zod";
+import { authenticateFromOdoo, createPartnerOdoo, getAllPartnersOdoo } from "../odoo";
 
 export async function GET() {
     try {
         const UID = await authenticateFromOdoo();
-        const res = await getAllPartners(UID);
+        const res = await getAllPartnersOdoo(UID);
 
         return NextResponse.json(res);
     } catch (error: any) {
@@ -14,10 +16,20 @@ export async function GET() {
 
 export async function POST(request: Request) {
     try {
-        console.log({ request });
+        const body = await request.json();
+        createContactSchema.parse(body);
+
+        const UID = await authenticateFromOdoo();
+        const newPartnerID = await createPartnerOdoo(UID, body);
 
         return NextResponse.json({});
     } catch (error: any) {
+        //Schema Validations
+        if (error instanceof z.ZodError) {
+            return NextResponse.json({ message: error.errors }, { status: 400 });
+        }
+
+        // Other errors
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }

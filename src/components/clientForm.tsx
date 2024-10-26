@@ -9,24 +9,25 @@ import { Client, FormErrors } from "@/types/types";
 import { CLIENT_FORM_STEPS } from "@/constants/constants";
 import SuccessModal from "./successModal";
 import { toast } from "react-toastify";
+import { stat } from "fs";
 
 export default function ClientForm() {
     const [step, setStep] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState<Client>({
-        fullName: "",
+        name: "",
         isCompany: false,
         companyName: "",
         street: "",
         city: "",
-        state: "",
-        zipCode: "",
-        country: "",
+        state_id: "18",
+        zip: "",
+        country_id: "233",
         email: "",
-        phoneNumber: "",
-        officeNumber: "",
-        preferredContact: "email",
-        preferredLanguage: "es",
+        mobile: "",
+        phone: "",
+        preferredContactMethod: "email",
+        lang: "es_ES",
     });
     const [errors, setErrors] = useState<FormErrors>({});
 
@@ -41,19 +42,19 @@ export default function ClientForm() {
         const newErrors: FormErrors = {};
         switch (step) {
             case 1:
-                if (!formData.fullName) newErrors["fullName"] = "Full Name is required.";
-                if (formData.isCompany && !formData.companyName) newErrors["companyName"] = "Company Name is required.";
+                if (!formData.name) newErrors["name"] = "Name is required.";
+                //if (formData.isCompany && !formData.companyName) newErrors["companyName"] = "Company Name is required.";
                 break;
             case 2:
                 if (!formData.street) newErrors["street"] = "Street is required.";
                 if (!formData.city) newErrors["city"] = "City is required.";
-                if (!formData.state) newErrors["state"] = "State is required.";
-                if (!formData.zipCode) newErrors["zipCode"] = "Zip Code is required.";
+                if (!formData.state_id) newErrors["state_id"] = "State is required.";
+                if (!formData.zip) newErrors["zip"] = "Zip Code is required.";
                 break;
             case 3:
                 if (!formData.email) newErrors["email"] = "Email is required.";
-                if (!formData.phoneNumber) newErrors["phoneNumber"] = "Phone Number is required.";
-                if (!formData.preferredContact) newErrors["preferredContact"] = "Preferred Contact is required.";
+                if (!formData.mobile) newErrors["mobile"] = "Mobile Number is required.";
+                if (!formData.preferredContactMethod) newErrors["preferredContactMethod"] = "Preferred Contact is required.";
                 break;
             default:
                 return {};
@@ -81,30 +82,69 @@ export default function ClientForm() {
                 </div>
             ));
         } else {
-            if (step === CLIENT_FORM_STEPS) setIsModalOpen(true);
-            else setStep((prev) => Math.min(prev + 1, CLIENT_FORM_STEPS));
+            if (step === CLIENT_FORM_STEPS) {
+                handleSubmit();
+            } else setStep((prev) => Math.min(prev + 1, CLIENT_FORM_STEPS));
         }
     };
 
     const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
+    const handleSubmit = async () => {
+        try {
+            const { isCompany, companyName, preferredContactMethod, ...restOfFormData } = formData;
+            const normalizedData = {
+                ...restOfFormData,
+                state_id: +formData.state_id,
+                country_id: +formData.country_id,
+                company_type: formData.isCompany ? "company" : "person",
+                zip: +formData.zip,
+                x_studio_preferred_contact_method: formData.preferredContactMethod,
+            };
+            const res = await fetch("/api/odoo/contacts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(normalizedData),
+            });
+
+            if (!res.ok) {
+                const error: ErrorResponse = await res.json();
+
+                const errorMessages = error.message
+                    .map((error) => {
+                        return `${error.message}`;
+                    })
+                    .join(" ");
+
+                throw new Error(errorMessages);
+            }
+
+            setIsModalOpen(true);
+        } catch (error: any) {
+            console.error({ error });
+            toast.error(error.message);
+        }
+    };
+
     const handleFinish = () => {
         setIsModalOpen(false);
         setStep(1);
         setFormData({
-            fullName: "",
+            name: "",
             isCompany: false,
             companyName: "",
             street: "",
             city: "",
-            state: "",
-            zipCode: "",
-            country: "",
+            state_id: "18",
+            zip: "",
+            country_id: "233",
             email: "",
-            phoneNumber: "",
-            officeNumber: "",
-            preferredContact: "email",
-            preferredLanguage: "es",
+            mobile: "",
+            phone: "",
+            preferredContactMethod: "email",
+            lang: "es_ES",
         });
     };
 

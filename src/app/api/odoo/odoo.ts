@@ -34,7 +34,7 @@ const getOdooVersion = async (): Promise<any> => {
     }
 };
 
-const getAllPartners = async (uid: number) => {
+const getAllPartnersOdoo = async (uid: number) => {
     try {
         const partners = await new Promise((resolve, reject) => {
             modelsClient.methodCall("execute_kw", [db, uid, password, "res.partner", "search_read", [], {}], (err: any, partners: any) => {
@@ -52,7 +52,7 @@ const getAllPartners = async (uid: number) => {
     }
 };
 
-const getPartnerById = async (uid: number, partnerId: number) => {
+const getPartnerByIdOdoo = async (uid: number, partnerId: number) => {
     try {
         const partner = await new Promise((resolve, reject) => {
             modelsClient.methodCall("execute_kw", [db, uid, password, "res.partner", "search_read", [[["id", "=", partnerId]]], {}], (err: any, partner: any) => {
@@ -70,6 +70,78 @@ const getPartnerById = async (uid: number, partnerId: number) => {
     }
 };
 
+const createPartnerOdoo = async (uid: number, partner: any) => {
+    try {
+        const createdPartner = await new Promise((resolve, reject) => {
+            modelsClient.methodCall("execute_kw", [db, uid, password, "res.partner", "create", [partner]], (err: any, createdPartner: any) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(createdPartner);
+                }
+            });
+        });
+        return createdPartner;
+    } catch (err) {
+        console.error("Error creating Odoo partner:", err);
+        throw err;
+    }
+};
+
+const getAllStatesOdoo = async (uid: number) => {
+    try {
+        const states = await new Promise((resolve, reject) => {
+            modelsClient.methodCall("execute_kw", [db, uid, password, "res.country.state", "search_read", [], {}], (err: any, states: any) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(states);
+                }
+            });
+        });
+        return states;
+    } catch (err) {
+        console.error("Error getting Odoo states:", err);
+        return [];
+    }
+};
+
+const getStatesByCountryOdoo = async (uid: number, countryId: number) => {
+    try {
+        const states = await new Promise((resolve, reject) => {
+            modelsClient.methodCall("execute_kw", [db, uid, password, "res.country.state", "search_read", [[["country_id", "=", countryId]]], { fields: ["id", "name"] }], (err: any, states: any) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(states);
+                }
+            });
+        });
+        return states;
+    } catch (err) {
+        console.error("Error getting Odoo states:", err);
+        return [];
+    }
+};
+
+const getAllCountriesOdoo = async (uid: number) => {
+    try {
+        const countries = await new Promise((resolve, reject) => {
+            modelsClient.methodCall("execute_kw", [db, uid, password, "res.country", "search_read", [], { fields: ["id", "name", "code"] }], (err: any, countries: any) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(countries);
+                }
+            });
+        });
+        return countries;
+    } catch (err) {
+        console.error("Error getting Odoo countries:", err);
+        return [];
+    }
+};
+
 const authenticateFromOdoo = async (): Promise<number> => {
     return new Promise((resolve, reject) => {
         commonClient.methodCall("authenticate", [db, username, password, {}], (err: any, uid: any) => {
@@ -83,4 +155,4 @@ const authenticateFromOdoo = async (): Promise<number> => {
     });
 };
 
-export { getOdooVersion, authenticateFromOdoo, getAllPartners, getPartnerById };
+export { getOdooVersion, authenticateFromOdoo, getAllPartnersOdoo, getPartnerByIdOdoo, createPartnerOdoo, getAllStatesOdoo, getAllCountriesOdoo, getStatesByCountryOdoo };

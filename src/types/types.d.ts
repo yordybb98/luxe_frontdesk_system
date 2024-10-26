@@ -1,31 +1,31 @@
 export type Client = {
-    fullName: string;
+    name: string;
     isCompany: boolean;
     companyName: string;
     street: string;
     city: string;
-    state: string;
-    zipCode: string;
-    country: string;
+    state_id: string;
+    zip: string;
+    country_id: string;
     email: string;
-    phoneNumber: string;
-    officeNumber: string;
-    preferredContact: "email" | "phone";
-    preferredLanguage: "en" | "es";
+    mobile: string;
+    phone: string;
+    preferredContactMethod: "email" | "phone" | "mobile";
+    lang: "en_US" | "es_ES";
 };
 
 export interface FormErrors {
-    fullName?: string;
+    name?: string;
     isCompany?: boolean;
     companyName?: string;
     street?: string;
     city?: string;
-    state?: string;
-    zipCode?: string;
-    country?: string;
+    state_id?: string;
+    zip?: string;
+    country_id?: string;
     email?: string;
-    phoneNumber?: string;
-    officeNumber?: string;
-    preferredContact?: string;
-    preferredLanguage?: string;
+    mobile?: string;
+    phone?: string;
+    preferredContactMethod?: string;
+    lang?: string;
 }
