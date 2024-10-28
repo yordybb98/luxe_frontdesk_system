@@ -9,6 +9,7 @@ import { Client, FormErrors } from "@/types/types";
 import { CLIENT_FORM_STEPS } from "@/constants/constants";
 import SuccessModal from "./successModal";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 export default function ClientForm() {
     const [step, setStep] = useState(1);
@@ -16,7 +17,7 @@ export default function ClientForm() {
     const [formData, setFormData] = useState<Client>({
         name: "",
         isCompany: false,
-        companyName: "",
+        company_name: "",
         street: "",
         city: "",
         state_id: "18",
@@ -93,33 +94,104 @@ export default function ClientForm() {
     const handleSubmit = async () => {
         try {
             setIsLoading(true);
-            const { isCompany, companyName, preferredContactMethod, ...restOfFormData } = formData;
-            const normalizedData = {
-                ...restOfFormData,
-                state_id: +formData.state_id,
-                country_id: +formData.country_id,
-                company_type: formData.isCompany ? "company" : "person",
-                zip: +formData.zip,
-                x_studio_preferred_contact_method: formData.preferredContactMethod,
-            };
-            const res = await fetch("/api/odoo/contacts", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(normalizedData),
-            });
+            const { isCompany, name, company_name, preferredContactMethod, ...restOfFormData } = formData;
 
-            if (!res.ok) {
-                const error: ErrorResponse = await res.json();
+            if (isCompany) {
+                const companyData = {
+                    ...restOfFormData,
+                    name: company_name,
+                    state_id: +formData.state_id,
+                    country_id: +formData.country_id,
+                    company_type: "company",
+                    zip: +formData.zip,
+                    x_studio_preferred_contact_method: formData.preferredContactMethod,
+                };
 
-                const errorMessages = error.message
-                    .map((error) => {
-                        return `${error.message}`;
-                    })
-                    .join(" ");
+                console.log({ companyData });
 
-                throw new Error(errorMessages);
+                const res = await fetch("/api/odoo/contacts", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(companyData),
+                });
+
+                if (!res.ok) {
+                    const error: ErrorResponse = await res.json();
+
+                    const errorMessages = error.message
+                        .map((error) => {
+                            return `${error.message}`;
+                        })
+                        .join(" ");
+
+                    throw new Error(errorMessages);
+                }
+
+                const company = await res.json();
+
+                console.log({ company });
+
+                const contactCompanyData = {
+                    ...companyData,
+                    company_type: "person",
+                    parent_id: company.id,
+                    name: name,
+                };
+
+                console.log({ contactCompanyData });
+
+                const res2 = await fetch("/api/odoo/contacts", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(contactCompanyData),
+                });
+
+                if (!res2.ok) {
+                    const error: ErrorResponse = await res2.json();
+
+                    const errorMessages = error.message
+                        .map((error) => {
+                            return `${error.message}`;
+                        })
+                        .join(" ");
+
+                    throw new Error(errorMessages);
+                }
+            } else {
+                const individualData = {
+                    ...restOfFormData,
+                    name,
+                    state_id: +formData.state_id,
+                    country_id: +formData.country_id,
+                    company_type: "person",
+                    zip: +formData.zip,
+                    x_studio_preferred_contact_method: formData.preferredContactMethod,
+                };
+                const res = await fetch("/api/odoo/contacts", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(individualData),
+                });
+
+                console.log({ individualData });
+
+                if (!res.ok) {
+                    const error: ErrorResponse = await res.json();
+
+                    const errorMessages = error.message
+                        .map((error) => {
+                            return `${error.message}`;
+                        })
+                        .join(" ");
+
+                    throw new Error(errorMessages);
+                }
             }
 
             setIsModalOpen(true);
@@ -137,7 +209,7 @@ export default function ClientForm() {
         setFormData({
             name: "",
             isCompany: false,
-            companyName: "",
+            company_name: "",
             street: "",
             city: "",
             state_id: "18",
@@ -155,8 +227,9 @@ export default function ClientForm() {
         <div className="min-h-screen bg-gradient-to-br from-gray-400 to-indigo-200 flex items-center justify-center p-4 w-full">
             <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-xl">
                 {/* Header */}
-                <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-gray-800 ">Register in Luxe Graphics</h2>
+                <div className="text-center mb-8 flex flex-col items-center justify-center">
+                    <Image src="/luxe.png" alt="Logo" width={200} height={200} className="mb-4" />
+                    <h2 className="text-3xl font-bold text-gray-800 ">Be part of our family</h2>
                     <p className="text-gray-600 mt-2">We&apos;re excited to get to know you better!</p>
                 </div>
 

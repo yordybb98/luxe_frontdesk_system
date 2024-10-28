@@ -1,7 +1,7 @@
 export type Client = {
     name: string;
     isCompany: boolean;
-    companyName: string;
+    company_name: string;
     street: string;
     city: string;
     state_id: string;
@@ -17,7 +17,7 @@ export type Client = {
 export interface FormErrors {
     name?: string;
     isCompany?: boolean;
-    companyName?: string;
+    company_name?: string;
     street?: string;
     city?: string;
     state_id?: string;

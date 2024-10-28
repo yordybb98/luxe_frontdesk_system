@@ -78,18 +78,18 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                             />
                             <Label htmlFor="isCompany">Is this for a company?</Label>
                         </div>
-                        {/* {formData.isCompany && (
+                        {formData.isCompany && (
                             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="space-y-2">
-                                <Label htmlFor="companyName">Company Name</Label>
+                                <Label htmlFor="company_name">Company Name</Label>
                                 <Input
-                                    id="companyName"
-                                    placeholder="Acme Inc."
-                                    value={formData.companyName}
-                                    onChange={(e) => updateForm("companyName", e.target.value)}
-                                    className={cn(errors.companyName && errorStyles)}
+                                    id="company_name"
+                                    placeholder="Type your company name..."
+                                    value={formData.company_name}
+                                    onChange={(e) => updateForm("company_name", e.target.value)}
+                                    className={cn(errors.company_name && errorStyles)}
                                 />
                             </motion.div>
-                        )} */}
+                        )}
                     </motion.div>
                 );
             case 2:
@@ -99,7 +99,7 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                             <Label htmlFor="street">Street</Label>
                             <Input
                                 id="street"
-                                placeholder="1056 Pine Island Rd"
+                                placeholder="Type your street..."
                                 value={formData.street}
                                 onChange={(e) => updateForm("street", e.target.value)}
                                 className={cn(errors.street && errorStyles)}
@@ -108,7 +108,13 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="city">City</Label>
-                                <Input id="city" placeholder="Cape Coral" value={formData.city} onChange={(e) => updateForm("city", e.target.value)} className={cn(errors.city && errorStyles)} />
+                                <Input
+                                    id="city"
+                                    placeholder="Type your city..."
+                                    value={formData.city}
+                                    onChange={(e) => updateForm("city", e.target.value)}
+                                    className={cn(errors.city && errorStyles)}
+                                />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="state">State</Label>
@@ -136,7 +142,14 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="zip">ZIP Code</Label>
-                                <Input id="zip" type="number" placeholder="33909" value={formData.zip} onChange={(e) => updateForm("zip", e.target.value)} className={cn(errors.zip && errorStyles)} />
+                                <Input
+                                    id="zip"
+                                    type="number"
+                                    placeholder="Type your ZIP code..."
+                                    value={formData.zip}
+                                    onChange={(e) => updateForm("zip", e.target.value)}
+                                    className={cn(errors.zip && errorStyles)}
+                                />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="country">Country</Label>
@@ -172,7 +185,7 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="john@example.com"
+                                placeholder="example@example.com"
                                 value={formData.email}
                                 onChange={(e) => updateForm("email", e.target.value)}
                                 className={cn(errors.email && errorStyles)}
@@ -184,7 +197,7 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                                 <Input
                                     id="mobile"
                                     type="tel"
-                                    placeholder="+1 (555) 123-4567"
+                                    placeholder="####-###-####"
                                     value={formData.mobile}
                                     onChange={(e) => updateForm("mobile", e.target.value)}
                                     className={cn(errors.mobile && errorStyles)}
@@ -195,7 +208,7 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                                 <Input
                                     id="phone"
                                     type="tel"
-                                    placeholder="+1 (555) 123-4567"
+                                    placeholder="####-###-####"
                                     value={formData.phone}
                                     onChange={(e) => updateForm("phone", e.target.value)}
                                     className={cn(errors.phone && errorStyles)}

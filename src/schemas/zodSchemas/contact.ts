@@ -5,6 +5,7 @@ export const createContactSchema = z
         name: z.string(),
         email: z.string().email(),
         company_type: z.enum(["person", "company"]),
+        company_name: z.string().optional(),
         lang: z.enum(["en_US", "es_ES"]),
         street: z.string(),
         city: z.string(),
@@ -13,6 +14,7 @@ export const createContactSchema = z
         country_id: z.number(),
         mobile: z.string(),
         phone: z.string(),
+        parent_id: z.number().optional(),
         x_studio_preferred_contact_method: z.enum(["email", "phone", "mobile"]),
     })
     .strict();

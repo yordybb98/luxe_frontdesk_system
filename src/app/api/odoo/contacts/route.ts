@@ -20,9 +20,9 @@ export async function POST(request: Request) {
         createContactSchema.parse(body);
 
         const UID = await authenticateFromOdoo();
-        await createPartnerOdoo(UID, body);
+        const id = await createPartnerOdoo(UID, body);
 
-        return NextResponse.json({});
+        return NextResponse.json({ id });
     } catch (error: any) {
         //Schema Validations
         if (error instanceof z.ZodError) {
