@@ -45,7 +45,7 @@ export default function ClientForm() {
         switch (step) {
             case 1:
                 if (!formData.name) newErrors["name"] = "Name is required.";
-                //if (formData.isCompany && !formData.companyName) newErrors["companyName"] = "Company Name is required.";
+                if (formData.isCompany && !formData.company_name) newErrors["company_name"] = "Company Name is required.";
                 break;
             case 2:
                 if (!formData.street) newErrors["street"] = "Street is required.";
