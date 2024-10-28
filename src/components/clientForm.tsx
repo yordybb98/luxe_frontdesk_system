@@ -10,6 +10,7 @@ import { CLIENT_FORM_STEPS } from "@/constants/constants";
 import SuccessModal from "./successModal";
 import { toast } from "react-toastify";
 import Image from "next/image";
+import { createContact } from "@/actions/contact";
 
 export default function ClientForm() {
     const [step, setStep] = useState(1);
@@ -107,31 +108,8 @@ export default function ClientForm() {
                     x_studio_preferred_contact_method: formData.preferredContactMethod,
                 };
 
-                console.log({ companyData });
-
-                const res = await fetch("/api/odoo/contacts", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(companyData),
-                });
-
-                if (!res.ok) {
-                    const error: ErrorResponse = await res.json();
-
-                    const errorMessages = error.message
-                        .map((error) => {
-                            return `${error.message}`;
-                        })
-                        .join(" ");
-
-                    throw new Error(errorMessages);
-                }
-
-                const company = await res.json();
-
-                console.log({ company });
+                //Creating company
+                const company = await createContact(companyData);
 
                 const contactCompanyData = {
                     ...companyData,
@@ -140,27 +118,8 @@ export default function ClientForm() {
                     name: name,
                 };
 
-                console.log({ contactCompanyData });
-
-                const res2 = await fetch("/api/odoo/contacts", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(contactCompanyData),
-                });
-
-                if (!res2.ok) {
-                    const error: ErrorResponse = await res2.json();
-
-                    const errorMessages = error.message
-                        .map((error) => {
-                            return `${error.message}`;
-                        })
-                        .join(" ");
-
-                    throw new Error(errorMessages);
-                }
+                //Creating company contact
+                await createContact(contactCompanyData);
             } else {
                 const individualData = {
                     ...restOfFormData,
@@ -171,27 +130,9 @@ export default function ClientForm() {
                     zip: +formData.zip,
                     x_studio_preferred_contact_method: formData.preferredContactMethod,
                 };
-                const res = await fetch("/api/odoo/contacts", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(individualData),
-                });
 
-                console.log({ individualData });
-
-                if (!res.ok) {
-                    const error: ErrorResponse = await res.json();
-
-                    const errorMessages = error.message
-                        .map((error) => {
-                            return `${error.message}`;
-                        })
-                        .join(" ");
-
-                    throw new Error(errorMessages);
-                }
+                //Creating individual contact
+                await createContact(individualData);
             }
 
             setIsModalOpen(true);

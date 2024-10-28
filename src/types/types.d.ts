@@ -14,6 +14,20 @@ export type Client = {
     lang: "en_US" | "es_ES";
 };
 
+export type ClientForm = {
+    name: string;
+    street: string;
+    city: string;
+    state_id: number;
+    zip: number;
+    country_id: number;
+    email: string;
+    mobile: string;
+    phone: string;
+    x_studio_preferred_contact_method: "email" | "phone" | "mobile";
+    lang: "en_US" | "es_ES";
+};
+
 export interface FormErrors {
     name?: string;
     isCompany?: boolean;
