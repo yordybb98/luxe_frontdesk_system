@@ -169,8 +169,9 @@ export default function ClientForm() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-400 to-indigo-200 flex items-center justify-center p-4 w-full">
-            <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-xl">
+        <div className="h-screen bg-[url('/luxe_graphics_office.webp')] bg-cover bg-center bgove flex items-center justify-center p-4 w-full relative">
+            <div className="absolute inset-0 bg-black/50 z-0"></div>
+            <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-xl z-10 m-4">
                 {/* Header */}
                 <div className="text-center mb-8 flex flex-col items-center justify-center">
                     <Image src="/luxe.png" alt="Logo" width={200} height={200} className="mb-4" />
