@@ -12,6 +12,7 @@ export type Client = {
     phone: string;
     preferredContactMethod: "email" | "phone" | "mobile";
     lang: "en_US" | "es_ES";
+    leadSource?: LeadSource;
 };
 
 export type ClientForm = {
@@ -42,4 +43,7 @@ export interface FormErrors {
     phone?: string;
     preferredContactMethod?: string;
     lang?: string;
+    leadSource?: string;
 }
+
+export type LeadSource = "google" | "facebook" | "instagram" | "tiktok" | "referred" | "other";
