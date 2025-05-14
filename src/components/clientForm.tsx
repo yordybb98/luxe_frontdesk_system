@@ -45,6 +45,7 @@ export default function ClientForm() {
         switch (step) {
             case 1:
                 if (!formData.name) newErrors["name"] = "Name is required.";
+                if (!formData.leadSource) newErrors["leadSource"] = "Lead Source is required.";
                 if (formData.isCompany && !formData.company_name) newErrors["company_name"] = "Company Name is required.";
                 break;
             case 2:
@@ -95,7 +96,8 @@ export default function ClientForm() {
     const handleSubmit = async () => {
         try {
             setIsLoading(true);
-            const { isCompany, name, company_name, preferredContactMethod, ...restOfFormData } = formData;
+
+            const { isCompany, name, company_name, preferredContactMethod, leadSource, ...restOfFormData } = formData;
 
             if (isCompany) {
                 const companyData = {
@@ -105,7 +107,8 @@ export default function ClientForm() {
                     country_id: +formData.country_id,
                     company_type: "company",
                     zip: +formData.zip,
-                    x_studio_preferred_contact_method: formData.preferredContactMethod,
+                    x_studio_preferred_contact_method: preferredContactMethod,
+                    x_studio_lead_source: leadSource,
                 };
 
                 //Creating company
@@ -128,7 +131,8 @@ export default function ClientForm() {
                     country_id: +formData.country_id,
                     company_type: "person",
                     zip: +formData.zip,
-                    x_studio_preferred_contact_method: formData.preferredContactMethod,
+                    x_studio_preferred_contact_method: preferredContactMethod,
+                    x_studio_lead_source: leadSource,
                 };
 
                 //Creating individual contact
@@ -170,7 +174,7 @@ export default function ClientForm() {
                 {/* Header */}
                 <div className="text-center mb-8 flex flex-col items-center justify-center">
                     <Image src="/luxe.png" alt="Logo" width={200} height={200} className="mb-4" />
-                    <h2 className="text-3xl font-bold text-gray-800 ">Be part of our family</h2>
+                    <h2 className="text-3xl font-bold text-gray-800">Be part of our family</h2>
                     <p className="text-gray-600 mt-2">We&apos;re excited to get to know you better!</p>
                 </div>
 
@@ -196,7 +200,7 @@ export default function ClientForm() {
                 </div>
 
                 {/* Form */}
-                <form onSubmit={(e) => e.preventDefault()} className="flex flex-col justify-between space-y-6 md:h-[320px] transition-all ease-in-out">
+                <form onSubmit={(e) => e.preventDefault()} className="flex flex-col justify-between space-y-6 transition-all ease-in-out">
                     <div>
                         <AnimatePresence mode="wait">
                             <StepForm step={step} formData={formData} updateForm={updateForm} errors={errors} />

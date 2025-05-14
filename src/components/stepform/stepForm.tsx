@@ -4,7 +4,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Switch } from "../ui/switch";
-import { Client, FormErrors } from "@/types/types";
+import { Client, FormErrors, LeadSource } from "@/types/types";
 import { cn } from "@/lib/utils";
 import { checkedStyles, errorStyles } from "./styles";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
@@ -52,6 +52,15 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
         }
     }, [step]);
 
+    const leadSourceOptions: { value: LeadSource; label: string }[] = [
+        { value: "google", label: "Google" },
+        { value: "facebook", label: "Facebook" },
+        { value: "instagram", label: "Instagram" },
+        { value: "tiktok", label: "TikTok" },
+        { value: "referred", label: "Friend/Family" },
+        { value: "other", label: "Other" },
+    ];
+
     const renderStep = () => {
         switch (step) {
             case 1:
@@ -69,27 +78,45 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                             />
                         </div>
 
-                        <div className="flex items-center space-x-2">
-                            <Switch
-                                id="isCompany"
-                                checked={formData.isCompany}
-                                onCheckedChange={(checked) => updateForm("isCompany", checked)}
-                                className={cn(formData.isCompany && `data-[state=checked]:bg-green-500`, "transition duration-200 ease-in-out")}
-                            />
-                            <Label htmlFor="isCompany">Is this for a company?</Label>
+                        <div className="flex space-y-2 justify-between">
+                            <div className="flex flex-col space-y-2">
+                                <Label htmlFor="state">How did you hear about us?</Label>
+                                <div className="overflow-hidden flex-wrap">
+                                    <RadioGroup value={formData.leadSource} onValueChange={(value) => updateForm("leadSource", value)}>
+                                        {leadSourceOptions.map(({ value, label }) => (
+                                            <div key={value} className="flex items-center space-x-2">
+                                                <RadioGroupItem value={value} id={value} className={cn(errors.leadSource && errorStyles, formData.leadSource === value && checkedStyles)} />
+                                                <Label htmlFor={value}>{label}</Label>
+                                            </div>
+                                        ))}
+                                    </RadioGroup>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col mt-0 min-w-56 space-y-4 ">
+                                <div className="flex items-center space-x-2">
+                                    <Switch
+                                        id="isCompany"
+                                        checked={formData.isCompany}
+                                        onCheckedChange={(checked) => updateForm("isCompany", checked)}
+                                        className={cn(formData.isCompany && `data-[state=checked]:bg-green-500`, "transition duration-200 ease-in-out")}
+                                    />
+                                    <Label htmlFor="isCompany">Is this for a company?</Label>
+                                </div>
+                                {formData.isCompany && (
+                                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="space-y-2">
+                                        <Label htmlFor="company_name">Company Name</Label>
+                                        <Input
+                                            id="company_name"
+                                            placeholder="Type your company name..."
+                                            value={formData.company_name}
+                                            onChange={(e) => updateForm("company_name", e.target.value)}
+                                            className={cn(errors.company_name && errorStyles)}
+                                        />
+                                    </motion.div>
+                                )}
+                            </div>
                         </div>
-                        {formData.isCompany && (
-                            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="space-y-2">
-                                <Label htmlFor="company_name">Company Name</Label>
-                                <Input
-                                    id="company_name"
-                                    placeholder="Type your company name..."
-                                    value={formData.company_name}
-                                    onChange={(e) => updateForm("company_name", e.target.value)}
-                                    className={cn(errors.company_name && errorStyles)}
-                                />
-                            </motion.div>
-                        )}
                     </motion.div>
                 );
             case 2:

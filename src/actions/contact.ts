@@ -15,10 +15,5 @@ export const createContact = async (contactData: ClientForm) => {
         throw new Error(errorMessages);
     }
 
-    console.log("**************************")
-    console.log(new Date())
-    console.log("NEW Contact Created:", contactData.name)
-    console.log("**************************")
-
     return await res.json();
 };

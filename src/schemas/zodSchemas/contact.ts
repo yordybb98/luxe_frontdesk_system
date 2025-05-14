@@ -16,5 +16,6 @@ export const createContactSchema = z
         phone: z.string(),
         parent_id: z.number().optional(),
         x_studio_preferred_contact_method: z.enum(["email", "phone", "mobile"]),
+        x_studio_lead_source: z.enum(["google", "facebook", "instagram", "tiktok", "referred", "other"]),
     })
     .strict();

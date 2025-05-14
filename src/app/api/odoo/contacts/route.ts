@@ -3,6 +3,8 @@ import { createContactSchema } from "@/schemas/zodSchemas/contact";
 import { z } from "zod";
 import { authenticateFromOdoo, createPartnerOdoo, getAllPartnersOdoo } from "../odoo";
 
+export type CreateContactDTO = z.infer<typeof createContactSchema>;
+
 export async function GET() {
     try {
         const UID = await authenticateFromOdoo();
@@ -17,10 +19,17 @@ export async function GET() {
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        createContactSchema.parse(body);
+        const contact: CreateContactDTO = createContactSchema.parse(body);
 
         const UID = await authenticateFromOdoo();
-        const id = await createPartnerOdoo(UID, body);
+        const id = await createPartnerOdoo(UID, contact);
+
+        console.log("**************************");
+        console.log("NEW CONTACT CREATED");
+        console.log(new Date().toLocaleString("en-US", { timeZone: "Etc/GMT+4" }));
+        console.log("Name:", contact.name);
+        console.log("Type:", contact.company_type);
+        console.log("**************************");
 
         return NextResponse.json({ id });
     } catch (error: any) {
