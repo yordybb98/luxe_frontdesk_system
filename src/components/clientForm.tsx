@@ -229,7 +229,12 @@ export default function ClientForm() {
                 </form>
             </div>
 
-            <SuccessModal isOpen={isModalOpen} onClose={handleFinish} title="Registration Successful" message="Thank you for being part of the Luxe Graphics family!" />
+            <SuccessModal
+                isOpen={isModalOpen}
+                onClose={handleFinish}
+                title="Registration Successful"
+                message={`Thank you, ${formData.name}${formData.company_name ? ` from ${formData.company_name}` : ""}, for being part of the Luxe Graphics family!`}
+            />
         </div>
     );
 }
