@@ -218,20 +218,9 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                                 className={cn(errors.email && errorStyles)}
                             />
                         </div>
-                        <div className="grid grid-cols-1  md:grid-cols-2 gap-4">
+                        <div className="grid  gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="phone">Phone Number</Label>
-                                <Input
-                                    id="mobile"
-                                    type="tel"
-                                    placeholder="####-###-####"
-                                    value={formData.mobile}
-                                    onChange={(e) => updateForm("mobile", e.target.value)}
-                                    className={cn(errors.mobile && errorStyles)}
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="phone">Office Number (Optional)</Label>
                                 <Input
                                     id="phone"
                                     type="tel"
@@ -251,12 +240,8 @@ export default function StepForm({ step, formData, updateForm, errors }: { step:
                                         <Label htmlFor="email">Email</Label>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="mobile" id="mobile" className={cn(formData.preferredContactMethod === "mobile" && checkedStyles)} />
-                                        <Label htmlFor="phone">Phone</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
                                         <RadioGroupItem value="phone" id="phone" className={cn(formData.preferredContactMethod === "phone" && checkedStyles)} />
-                                        <Label htmlFor="phone">Office Phone</Label>
+                                        <Label htmlFor="phone">Phone</Label>
                                     </div>
                                 </RadioGroup>
                             </div>

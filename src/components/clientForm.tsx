@@ -25,7 +25,6 @@ export default function ClientForm() {
         zip: "",
         country_id: "233",
         email: "",
-        mobile: "",
         phone: "",
         preferredContactMethod: "email",
         lang: "es_ES",
@@ -56,7 +55,7 @@ export default function ClientForm() {
                 break;
             case 3:
                 if (!formData.email) newErrors["email"] = "Email is required.";
-                if (!formData.mobile) newErrors["mobile"] = "Mobile Number is required.";
+                if (!formData.phone) newErrors["phone"] = "Phone Number is required.";
                 if (!formData.preferredContactMethod) newErrors["preferredContactMethod"] = "Preferred Contact is required.";
                 break;
             default:
@@ -161,7 +160,6 @@ export default function ClientForm() {
             zip: "",
             country_id: "233",
             email: "",
-            mobile: "",
             phone: "",
             preferredContactMethod: "email",
             lang: "es_ES",

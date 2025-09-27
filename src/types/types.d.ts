@@ -8,9 +8,8 @@ export type Client = {
     zip: string;
     country_id: string;
     email: string;
-    mobile: string;
     phone: string;
-    preferredContactMethod: "email" | "phone" | "mobile";
+    preferredContactMethod: "email" | "phone";
     lang: "en_US" | "es_ES";
     leadSource?: LeadSource;
 };
@@ -23,9 +22,8 @@ export type ClientForm = {
     zip: number;
     country_id: number;
     email: string;
-    mobile: string;
     phone: string;
-    x_studio_preferred_contact_method: "email" | "phone" | "mobile";
+    x_studio_preferred_contact_method: "email" | "phone";
     lang: "en_US" | "es_ES";
 };
 
@@ -39,7 +37,6 @@ export interface FormErrors {
     zip?: string;
     country_id?: string;
     email?: string;
-    mobile?: string;
     phone?: string;
     preferredContactMethod?: string;
     lang?: string;
