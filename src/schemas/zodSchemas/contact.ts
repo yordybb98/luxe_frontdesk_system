@@ -12,10 +12,9 @@ export const createContactSchema = z
         state_id: z.number(),
         zip: z.number(),
         country_id: z.number(),
-        mobile: z.string(),
         phone: z.string(),
         parent_id: z.number().optional(),
-        x_studio_preferred_contact_method: z.enum(["email", "phone", "mobile"]),
+        x_studio_preferred_contact_method: z.enum(["email", "phone"]),
         x_studio_lead_source: z.enum(["google", "facebook", "instagram", "tiktok", "referred", "other"]),
     })
     .strict();
